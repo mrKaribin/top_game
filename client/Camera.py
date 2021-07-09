@@ -11,16 +11,16 @@ class Camera:
         self.fps = fps
         self.speed = speed
 
-    def set_shift(self, degrees: int, index: float = 0.1):
-        dx = self.place.width * index * math.cos(math.radians(degrees))
+    def set_shift(self, degrees: int, index: float = 0.05):
+        dx = self.place.height * index * math.cos(math.radians(degrees))
         dy = -self.place.height * index * math.sin(math.radians(degrees))
         self.shift = (dx, dy)
 
     def get_position_over(self, object: Object, with_shift: bool = True):
         ox, oy = object.place.center
-        csize = self.place.size
+        cx, cy = self.place.size
         sx, sy = self.shift if with_shift else (0, 0)
-        return ox - csize[0] / 2 + sx, oy - csize[1] / 2 + sy
+        return ox - cx / 2 + sx, oy - cy / 2 + sy
 
     def set_position_over(self, object: Object, with_shift: bool = True):
         x, y = object.place.center

@@ -17,7 +17,7 @@ class Map:
     def generate(self, size):
         img = Image.new('RGB', self.size)
         ground = Image.open(g.dir.images + 'ground.png')
-        ground_size = 100
+        ground_size = 60
         ground.thumbnail((ground_size, ground_size))
         width, height = size
         for i in range(int(width / ground_size) + 1):
