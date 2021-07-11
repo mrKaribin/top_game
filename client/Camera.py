@@ -11,8 +11,8 @@ class Camera:
         self.fps = fps
         self.speed = speed
 
-    def set_shift(self, degrees: int, index: float = 0.05):
-        dx = self.place.height * index * math.cos(math.radians(degrees))
+    def set_shift(self, degrees: int, index: float = 0.1):
+        dx = self.place.width * index * math.cos(math.radians(degrees))
         dy = -self.place.height * index * math.sin(math.radians(degrees))
         self.shift = (dx, dy)
 

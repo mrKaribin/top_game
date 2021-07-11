@@ -1,5 +1,7 @@
 import pygame as pg
 import Global as g
+from Animation import Animation
+from Engine import Engine
 from Objects.Player import Player
 from Map import Map
 from Camera import Camera
@@ -12,16 +14,17 @@ if __name__ == '__main__':
     dis_size = (dis_info.current_w, dis_info.current_h)
     g.size.screen = dis_size
     g.size.camera = dis_size
-    screen = pg.display.set_mode(g.size.screen)
+    g.screen = pg.display.set_mode(g.size.screen)
     clock = pg.time.Clock()
 
+    g.engine = Engine()
     g.map = Map(g.size.map)
-    player = Player(g.dir.images + 'player.png', g.map.place.center, (50, 50), 100)
-    g.camera = Camera(player.place.center, g.size.camera, 100, 200)
-    print(g.map.place.topleft, g.map.place.size)
-    print(player.place.topleft, player.place.size)
+    g.camera = Camera((0, 0), g.size.camera, 80, 200)
+    player = Player(g.map.place.center, (50, 50), 100, 360,
+                    ((g.state.default, Animation(g.dir.images + 'player', (50, 50), 1)), ))
+    g.engine.add_object(player, g.types.level.area)
+    g.camera.set_position_over(player)
 
-    lastPos = player.place.topleft
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -60,12 +63,9 @@ if __name__ == '__main__':
                     g.camera.speed = 200
                     g.buttons.scope = False
 
-        player.update()
-
         g.camera.move_to_object(map, player)
-        screen.blit(g.map.image, g.camera.get_map_place())
-        if (place := g.camera.get_object_place(player)) is not False:
-            screen.blit(player.image, place)
+        g.screen.blit(g.map.image, g.camera.get_map_place())
+        g.engine.update()
 
         pg.display.update()
         clock.tick(g.camera.fps)
